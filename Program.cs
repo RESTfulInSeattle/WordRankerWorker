@@ -1,4 +1,5 @@
 ﻿using Amazon.SQS.Model;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -61,11 +62,14 @@ namespace WordRankerWorker
             {
                 foreach (var message in messages.Messages)
                 {
+                    Console.WriteLine("Message Retrieved: " + message.Body);
                     string returnRank = Rank(message.Body);
 
                     bool success = DynamoDbActions.AddItem(message.Body, returnRank);
+                    Console.WriteLine("Added to DynamoDB: " + success.ToString());
 
                     success = SQSActions.DeleteMessage("https://sqs.us-west-2.amazonaws.com/792614619693/Assignment3-Queue", message.ReceiptHandle);
+                    Console.WriteLine("Message Deleted: " + success.ToString());
                 }
             }
         }
@@ -75,7 +79,7 @@ namespace WordRankerWorker
             while (true)
             {
                 CheckForWork();
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
             }
         }
     }

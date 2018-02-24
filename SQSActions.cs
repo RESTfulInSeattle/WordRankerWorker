@@ -34,7 +34,7 @@ namespace WordRankerWorker
 
             var response = sqsClient.DeleteMessage(deleteMessageRequest);
 
-            if (response.HttpStatusCode == HttpStatusCode.Accepted) return true;
+            if (response.HttpStatusCode == HttpStatusCode.OK) return true;
 
             return false;
         }
@@ -52,7 +52,7 @@ namespace WordRankerWorker
 
             var response = sqsClient.SendMessage(sendMessageRequest);
 
-            if (response.HttpStatusCode == HttpStatusCode.Accepted) return true;
+            if (response.HttpStatusCode == HttpStatusCode.OK) return true;
 
             return false;
         }
